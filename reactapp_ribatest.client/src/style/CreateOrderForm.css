@@ -1,0 +1,59 @@
+/* Add this CSS to your styles (e.g., App.css) */
+
+.createOrderForm {
+    position: fixed; /* Position it fixed to the viewport */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for the element's own size */
+    background-color: rgb(82, 82, 82); /* Background color of the card */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    padding: 20px; /* Padding inside the card */
+    z-index: 1000; /* Ensure it appears above other content */
+    width: 30%; /* Full width of the parent */
+    flex-direction: column; /* Stack elements vertically */
+}
+
+.createOrderForm h2 {
+    margin: 0 0 15px; /* Margin for the heading */
+}
+
+.createOrderForm form {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack elements vertically */
+}
+
+.createOrderForm label {
+    margin: 0 0 5px 0;
+    font-weight: bold; 
+    text-align: left; /* Align text to the left */
+    display: block; /* Ensure the label takes the full width */
+}
+
+
+.createOrderForm input {
+    margin-bottom: 15px; /* Space between inputs */
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ccc; /* Border for inputs */
+    border-radius: 4px; /* Rounded corners for inputs */
+    width: 100%; /* Make inputs take full width */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+}
+
+.createOrderForm button {
+    padding: 10px; /* Padding for buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.createOrderForm button[type="submit"] {
+    background-color: #007bff; /* Primary button color */
+    color: white; /* Text color for the button */
+    margin-bottom: 10px;
+}
+
+.createOrderForm button[type="button"] {
+    background-color: #8f4944; /* Cancel button color */
+    color: white; /* Text color for the button */
+}

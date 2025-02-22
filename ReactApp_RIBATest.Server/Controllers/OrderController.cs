@@ -29,14 +29,14 @@ namespace ReactApp_RIBATest.Server.Controllers
             return order;
         }
 
-        [HttpPost]
+        [HttpPost("CreateOrder")]
         public async Task<IActionResult> AddOrder(Order order)
         {
             await _orderRepository.AddOrderAsync(order);
             return CreatedAtAction(nameof(GetOrder), new { id = order.OrderId }, order);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteOrder/{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             await _orderRepository.DeleteOrderAsync(id);

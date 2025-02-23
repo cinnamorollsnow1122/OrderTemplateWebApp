@@ -110,4 +110,8 @@ This project is a **full-stack application** consisting of a **React frontend** 
 - `FrontendUrl`: Base URL for the frontend API (default : `https://localhost:5173`).
 
   ---
+  ##Further Development
+  ### Frontend
+  
+  ### Backend
 

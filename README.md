@@ -106,7 +106,7 @@ This project is a **full-stack application** consisting of a **React frontend** 
 ### Frontend
 - `VITE_API_BASE_URL`: Base URL for the backend API (default: `https://localhost:7178/api`).
 - 
-### Frontend
+### Backend
 - `FrontendUrl`: Base URL for the frontend API (default : `https://localhost:5173`).
 
   ---

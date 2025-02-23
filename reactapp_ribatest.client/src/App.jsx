@@ -150,8 +150,8 @@ function App() {
                             </th>
                             <th>Customer Name</th>
                             <th>Cost</th>
-                            <th>Unit Price</th>
-                            <th>Quantity</th>
+                            {/*<th>Unit Price</th>*/}
+                            {/*<th>Quantity</th>*/}
                             <th></th>
                         </tr>
                     </thead>
@@ -162,8 +162,8 @@ function App() {
                                 <td>{formatDate(order.orderDate)}</td>
                                 <td>{order.customerName}</td>
                                 <td>{order.totalCost}</td>
-                                <td>{order.unitPrice}</td>
-                                <td>{order.quantity}</td>
+                                {/*<td>{order.unitPrice}</td>*/}
+                                {/*<td>{order.quantity}</td>*/}
                                 <td><button className='delete-button' onClick={() => handleDeleteById(order.orderId)} >🗑️</button>
                                 <button className='edit-button' onClick={() => handleEditOrder(order)}>✏️</button>
                                 </td>

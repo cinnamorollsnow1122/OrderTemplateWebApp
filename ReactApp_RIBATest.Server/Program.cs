@@ -4,12 +4,13 @@ using ReactApp_RIBATest.Server.Interface;
 using ReactApp_RIBATest.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+var frontendUrl = builder.Configuration["FrontendUrl"];
 
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("https://localhost:5173") // add React app host url
+        builder => builder.WithOrigins(frontendUrl) // add React app host url
                           .AllowAnyHeader()
                           .AllowAnyMethod());
 });

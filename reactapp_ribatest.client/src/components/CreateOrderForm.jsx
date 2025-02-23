@@ -3,12 +3,14 @@ import '../style/CreateOrderForm.css';
 import { createOrder } from '../service/apiService'; // Import the createOrder function
 
 const CreateOrderForm = ({ onClose, onOrderCreated }) => {
+
     const [formData, setFormData] = useState({
         customerName: '',
-        unitPrice: '',
-        quantity: '',
-        orderDate: '' // Add orderDate to the state
+        unitPrice: 0.01,
+        quantity: 1,
+        orderDate: new Date().toISOString().split('T')[0] //this retrieve browser time, more accurately need retrieve server time
     });
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -54,27 +56,36 @@ const CreateOrderForm = ({ onClose, onOrderCreated }) => {
                     <label>Unit Price:</label>
                     <input
                         type="number"
-                        name="unitPrice" // Use name attribute to identify the field
+                        name="unitPrice" 
                         value={formData.unitPrice}
                         onChange={handleChange}
+                        min = "0.01"
+                        step = "0.01"
                         required
                     />
+                    {formData.unitPrice <= 0 && (
+                        <span className="error"> Unit Price must be greater than 0</span>
+                    )}
                 </div>
                 <div>
                     <label>Quantity:</label>
                     <input
                         type="number"
-                        name="quantity" // Use name attribute to identify the field
+                        name="quantity" 
                         value={formData.quantity}
                         onChange={handleChange}
+                        min = "1"
                         required
                     />
+                    {formData.quantity <= 0 && (
+                        <span className="error"> Quantity must be greater than 0</span>
+                    )}
                 </div>
                 <div>
                     <label>Order Date:</label>
                     <input
                         type="date"
-                        name="orderDate" // Use name attribute to identify the field
+                        name="orderDate" 
                         value={formData.orderDate}
                         onChange={handleChange}
                         required

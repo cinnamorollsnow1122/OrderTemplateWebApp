@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ReactApp_RIBATest.Server.Interface;
 using ReactApp_RIBATest.Server.Model;
 
@@ -15,32 +16,95 @@ namespace ReactApp_RIBATest.Server.Controllers
             _orderRepository = orderRepository;
         }
 
+        //if the app include user, can include JWT token for user role validation before calling API
+    
         [HttpGet]
-        public async Task<IEnumerable<Order>> GetOrders()
+        public async Task<IEnumerable<OrderView>> GetOrdersView()
         {
-            return await _orderRepository.GetOrdersAsync();
+            var orders = await _orderRepository.GetOrdersAsync();
+            return orders.Select(x => new OrderView(x));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
+            //param validation
+            if (id <= 0)
+            {
+            return BadRequest("ID must be a positive integer.");
+            }
+
             var order = await _orderRepository.GetOrderByIdAsync(id);
             if (order == null) return NotFound();
             return order;
         }
 
-        [HttpPost("CreateOrder")]
+        [HttpGet("GetOrderByYear")]
+        public async Task<ActionResult<IEnumerable<OrderView>>> GetOrderViewByYear([FromQuery]int year)
+        {
+            //param validation
+            if (year < 1900 || year > 2200)
+            {
+                return BadRequest("Year must be between 1900 and 2200");
+            }
+
+            var orders = await _orderRepository.GetOrdersByYearAsync(year);
+
+            if(orders == null || !orders.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(orders.Select(x => new OrderView(x)));
+        }
+
+        [HttpPost("createOrder")]
         public async Task<IActionResult> AddOrder(Order order)
         {
             await _orderRepository.AddOrderAsync(order);
             return CreatedAtAction(nameof(GetOrder), new { id = order.OrderId }, order);
         }
 
-        [HttpDelete("deleteOrder/{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+
+        [HttpPost("editOrder")]
+        public async Task<IActionResult> EditOrder(Order order)
         {
-            await _orderRepository.DeleteOrderAsync(id);
-            return NoContent();
+            var updateSuccess = await _orderRepository.EditOrderAsync(order);
+
+            if (!updateSuccess)
+            {
+                return BadRequest("Edit failed");
+            }
+
+            return Ok(new { message = "Edit successfully" });
+
+        }
+
+
+
+        //can use soft delete if its not sensitive data or high volume system
+        [HttpDelete("deleteOrder")]
+        public async Task<IActionResult> DeleteOrder([FromQuery] int id)
+        {
+            //param validation
+            if (id <= 0)
+            {
+                return BadRequest("ID must be a positive integer.");
+            }
+
+            var order = await _orderRepository.GetOrderByIdAsync(id);
+
+            if (order == null) return NotFound();
+
+            var deleteSuccess = await _orderRepository.DeleteOrderAsync(order);
+
+            if (!deleteSuccess)
+            {
+                return BadRequest("Delete failed");
+            }
+
+            return Ok(new { message = "Order deleted successfully" });
+
         }
 
     }

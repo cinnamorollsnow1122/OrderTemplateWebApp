@@ -6,8 +6,57 @@
 }
 
 .CreateOrderButton{
-    background-color: palevioletred ;
-    margin-left: 500px;
+    background-color: palevioletred;
+    position: absolute; /* Position the button absolutely */
+    top: 10px; /* Adjust the top position */
+    right: 20px; /* Adjust the right position */
+    border: none; /* Optional: remove default border */
+    color: white; /* Optional: set text color */
+    padding: 10px 20px; /* Optional: add padding */
+    border-radius: 5px; /* Optional: add rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+.CreateOrderButton:hover {
+    background-color: #d45d7a; /* Optional: change color on hover */
+}
+.FilterYearButton{
+    position: absolute; /* Position the button absolutely */
+    top: 10px; /* Adjust the top position */
+    left: 14%; /* Adjust the right position */
+}
+.ShowAllButton{
+    margin-left: 10px;
+    position: absolute; /* Position the button absolutely */
+    top: 10px; /* Adjust the top position */
+    left: 1%; /* Adjust the right position */
+}
+.delete-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none; /* Remove the default focus outline */
+}
+.delete-button:focus {
+    border: none; /* Ensure no border appears when focused */
+    outline: none; /* Remove the focus outline */
+}
+.delete-button:hover {
+
+    background-color: #ffe7e7; /* Optional: change color on hover */
+}
+.edit-button{
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none; /* Remove the default focus outline */
+}
+.edit-button:focus {
+    border: none; /* Ensure no border appears when focused */
+    outline: none; /* Remove the focus outline */
+}
+.edit-button:hover {
+
+    background-color: #ffe7e7; /* Optional: change color on hover */
 }
 
 .table-container {
@@ -17,9 +66,12 @@
     color:black;
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    position: relative; /* Set position to relative for absolute positioning of the button */
+    min-width: 1000px;
 }
 
 .data-table {
+    margin-top: 50px;
     width: 100%;
     border-collapse: collapse; /* Remove space between borders */
 }

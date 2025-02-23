@@ -8,7 +8,7 @@ namespace ReactApp_RIBATest.Server.Model
 
         public OrderView(Order order) { 
             this.OrderId = order.OrderId;
-            this.OrderDate = order.OrderDate;
+            this.OrderDate = order.OrderDate.Date;
             this.CustomerName = order.CustomerName;
             this.UnitPrice = order.UnitPrice;
             this.Quantity = order.Quantity;

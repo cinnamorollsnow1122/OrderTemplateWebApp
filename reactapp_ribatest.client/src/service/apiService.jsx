@@ -39,6 +39,21 @@ const createOrder = async (order) => {
     return data; // Return the created order
 };
 
+const editOrder = async (order) => {
+    const response = await fetch(`${API_BASE_URL}/order/editOrder`, { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(order),
+    });
+    if (!response.ok) {
+        throw new Error('Failed to edit order');
+    }
+    const data = await response.json();
+    return data; // Return the created order
+};
+
 const deleteOrderById = async (id) => {
     const response = await fetch(`${API_BASE_URL}/order/deleteOrder?id=${id}` ,{
         method: 'DELETE',
@@ -57,4 +72,4 @@ const deleteOrderById = async (id) => {
 };
 
 
-export { fetchOrderData, createOrder, deleteOrderById, fetchOrderDataByYear };
+export { fetchOrderData, createOrder, editOrder, deleteOrderById, fetchOrderDataByYear };

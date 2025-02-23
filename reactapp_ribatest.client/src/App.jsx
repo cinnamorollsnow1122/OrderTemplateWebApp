@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react';
 import './style/App.css';
 import { deleteOrderById, fetchOrderData, fetchOrderDataByYear } from './service/apiService'; // Import the service
 import CreateOrderForm from './components/CreateOrderForm'; // Import the CreateOrderForm
+import EditOrderForm from './components/EditOrderForm'; // Import the CreateOrderForm
 
 function App() {
     const [orders, setOrders] = useState([]);
     const [isCreateOrderFormVisible, setCreateOrderFormVisible] = useState(false);
+    //foredit
+    const [isEditOrderFormVisible, setIsEditOrderFormVisible] = useState(false); 
+    const [selectedOrder, setSelectedOrder] = useState(null); 
     //to handle if too many pages
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(5);
@@ -59,7 +63,17 @@ function App() {
         setCreateOrderFormVisible(true); // Show the create order form
     };
 
-    const handleOrderCreated = (newOrder) => {
+    const handleEditOrder = (order) => {
+        setSelectedOrder(order); // Set the selected order
+        setIsEditOrderFormVisible(true); // Show the edit form
+    };
+
+    const handleOrderCreated = () => {
+        loadOrders(); //need call backed to calculate the cost of new order
+        setCurrentPage(1);
+    };
+
+    const handleOrderEdited = () => {
         loadOrders(); //need call backed to calculate the cost of new order
         setCurrentPage(1);
     };
@@ -86,15 +100,36 @@ function App() {
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc'); // Toggle sort order
     };
 
+    //handle for display date format
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const year = String(date.getFullYear()).slice(-2); // Get last 2 digits of the year
+        return `${day}/${month}/${year}`; // Combine into ddMMyy format
+    };
 
-
+    //handle page number
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
     const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1); // Go to the previous page
+        }
+    };
+    
+    const handleNextPage = () => {
+        if (currentPage < Math.ceil(orders.length / ordersPerPage)) {
+            setCurrentPage(currentPage + 1); // Go to the next page
+        }
+    };
+
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber); // Update the current page state
     };
+
     const contents = orders.length === 0
     ? <p><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
     : (
@@ -111,7 +146,7 @@ function App() {
                         <tr>
                             <th>Order ID</th>
                             <th onClick={sortOrders} style={{ cursor: 'pointer' }}>
-                                Order Date {sortOrder === 'asc' ? '↑' : '↓' }
+                                Order Date (dd/MM/yy) {sortOrder === 'asc' ? '↑' : '↓' }
                             </th>
                             <th>Customer Name</th>
                             <th>Cost</th>
@@ -124,13 +159,13 @@ function App() {
                         {currentOrders.map(order => (
                             <tr key={order.orderId}>
                                 <td>{order.orderId}</td>
-                                <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                <td>{formatDate(order.orderDate)}</td>
                                 <td>{order.customerName}</td>
                                 <td>{order.totalCost}</td>
                                 <td>{order.unitPrice}</td>
                                 <td>{order.quantity}</td>
                                 <td><button className='delete-button' onClick={() => handleDeleteById(order.orderId)} >🗑️</button>
-                                    <button className='edit-button'>✏️</button>
+                                <button className='edit-button' onClick={() => handleEditOrder(order)}>✏️</button>
                                 </td>
                             </tr>
                         ))}
@@ -138,14 +173,8 @@ function App() {
                 </table>
             </div>
             <div>
-                <button>Previous Page</button>
-                <button>Next Page</button>
-
-                {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }, (_, index) => (
-                    <button key={index + 1} onClick={() => paginate(index + 1)}>
-                        {index + 1}
-                    </button>
-                ))}
+                <button onClick={handlePreviousPage} disabled={currentPage === 1}>Previous Page</button>
+                <button onClick={handleNextPage} disabled={currentPage === Math.ceil(orders.length / ordersPerPage)} >Next Page</button>
             </div>
         </>
     );
@@ -160,52 +189,17 @@ function App() {
                     onOrderCreated={handleOrderCreated} 
                 />
             )}
+
+            {isEditOrderFormVisible && (
+                <EditOrderForm
+                onClose={() => setIsEditOrderFormVisible(false)}
+                onOrderUpdated={handleOrderEdited}
+                order={selectedOrder}
+            />
+            )}
         </div>
     );
 
-    /*
-    const [forecasts, setForecasts] = useState();
-
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
-    return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
-    }*/
 }
 
 export default App;

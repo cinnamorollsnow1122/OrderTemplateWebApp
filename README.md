@@ -48,6 +48,7 @@ This project is a **full-stack application** consisting of a **React frontend** 
 - **ASP.NET Core**: Framework for building RESTful APIs.
 - **Entity Framework Core**: ORM for database interactions.
 - **SQLite**: Database for storing orders.
+- **XUnit**: Testing framework for .NET
 - **CORS**: Cross-Origin Resource Sharing for frontend-backend communication.
 
 ---

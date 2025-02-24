@@ -56,7 +56,7 @@ This project is a **full-stack application** consisting of a **React frontend** 
    ```bash
    cd ReactApp_RIBATest.Server
    ```
-2. 2. Restore dependencies:
+2. Restore dependencies:
    ```bash
    dotnet restore
    ```
@@ -64,7 +64,7 @@ This project is a **full-stack application** consisting of a **React frontend** 
    ```bash
    dotnet run
    ```
-4. The API will be available at [https://localhost:5132](https://localhost:5132).
+4. The API will be available at [https://localhost:7178](https://localhost:7178).
 
 
 ### Frontend Setup

@@ -95,3 +95,7 @@ th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.error{
+    color:#d45d7a;
+}

@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import './style/App.css';
 import { deleteOrderById, fetchOrderData, fetchOrderDataByYear } from './service/apiService'; // Import the service
 import CreateOrderForm from './components/CreateOrderForm'; // Import the CreateOrderForm
-import EditOrderForm from './components/EditOrderForm'; // Import the CreateOrderForm
+import EditOrderForm from './components/EditOrderForm'; 
 
+//further dev: need to set access rights for delete, edit, create, view action
 function App() {
     const [orders, setOrders] = useState([]);
     const [isCreateOrderFormVisible, setCreateOrderFormVisible] = useState(false);
@@ -15,6 +16,7 @@ function App() {
     const [ordersPerPage] = useState(5);
     const [sortOrder, setSortOrder] = useState('asc'); // State for sorting order
     //for filter 2024
+    //further dev: cache the loaded filter data if 2024 data is some legacy data.
     const [FilteredBy2024, setFilteredBy2024] = useState(false);
     const year = 2024;
 
@@ -22,7 +24,6 @@ function App() {
     const loadOrders = async () => {
         try{
             let data;
-            console.log(FilteredBy2024);
             if(!FilteredBy2024){
                  data = await fetchOrderData(); //call from apiService.jsx
             }
@@ -30,7 +31,6 @@ function App() {
                  data = await fetchOrderDataByYear(year); //call from apiService.jsx
             }
             setOrders(data);
-            setCurrentPage(1);
         }catch(error){
             console.error('Error fetching orders:', error);
         }
@@ -41,9 +41,8 @@ function App() {
     }, []); // Empty dependency array
     
     useEffect(() => {
-        console.log('FilteredBy2024 changed:', FilteredBy2024);
-
         loadOrders();
+        setCurrentPage(1);
     }, [FilteredBy2024]);
 
     const handleShowAll = () => {  
@@ -52,7 +51,6 @@ function App() {
 
     const handleFilter2024 = async () => {
             try{
-                setCurrentPage(1);
                 setFilteredBy2024(true);
             }catch(error){
                 console.error('No 2024 orders found :', error);
@@ -75,7 +73,6 @@ function App() {
 
     const handleOrderEdited = () => {
         loadOrders(); //need call backed to calculate the cost of new order
-        setCurrentPage(1);
     };
 
     const handleDeleteById = async (id) => {
@@ -87,7 +84,7 @@ function App() {
         await deleteOrderById(id);
         // Refresh the orders list
         loadOrders();
-
+        setCurrentPage(1);//further dev: should calculate the current page after delete
     };
 
     const sortOrders = () => {

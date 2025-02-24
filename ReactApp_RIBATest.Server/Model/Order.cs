@@ -9,7 +9,7 @@ namespace ReactApp_RIBATest.Server.Model
         public int OrderId { get; set; }  // Primary Key
 
         [Required]
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow;  // Default to current date
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;  // should set as only store as DateTime.Date in db
 
         [Required]
         [MaxLength(100)]
@@ -19,7 +19,7 @@ namespace ReactApp_RIBATest.Server.Model
         public decimal UnitPrice { get; set; }  // Price per unit
 
         [Required]
-        public int Quantity { get; set; }  // Number of units ordered
+        public int Quantity { get; set; }  // Number of units ordered, if number too large, suggest to use long in case of overflow
 
 
     }

@@ -16,15 +16,17 @@ namespace ReactApp_RIBATest.Server.Controllers
             _orderRepository = orderRepository;
         }
 
+        //further dev: should implement with return more clear status code
         //if the app include user, can include JWT token for user role validation before calling API
-    
+
         [HttpGet]
-        public async Task<IEnumerable<OrderView>> GetOrdersView()
+        public async Task<ActionResult<IEnumerable<OrderView>>> GetOrdersView()
         {
             var orders = await _orderRepository.GetOrdersAsync();
-            return orders.Select(x => new OrderView(x));
+            return Ok(orders.Select(x => new OrderView(x)));
         }
 
+        //further dev: can use for specific update later
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
@@ -43,6 +45,7 @@ namespace ReactApp_RIBATest.Server.Controllers
         public async Task<ActionResult<IEnumerable<OrderView>>> GetOrderViewByYear([FromQuery]int year)
         {
             //param validation
+            //can hide the error message if too sensitive and just do logging in server side
             if (year < 1900 || year > 2200)
             {
                 return BadRequest("Year must be between 1900 and 2200");
@@ -69,6 +72,13 @@ namespace ReactApp_RIBATest.Server.Controllers
         [HttpPost("editOrder")]
         public async Task<IActionResult> EditOrder(Order order)
         {
+            if (order == null)
+            {
+                return BadRequest("Edit failed");
+            }
+
+            //further dev: can further check more validation for each field in order
+
             var updateSuccess = await _orderRepository.EditOrderAsync(order);
 
             if (!updateSuccess)
@@ -82,7 +92,7 @@ namespace ReactApp_RIBATest.Server.Controllers
 
 
 
-        //can use soft delete if its not sensitive data or high volume system
+        //can use soft delete if its not sensitive data or its not high volume system
         [HttpDelete("deleteOrder")]
         public async Task<IActionResult> DeleteOrder([FromQuery] int id)
         {

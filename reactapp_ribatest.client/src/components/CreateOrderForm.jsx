@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../style/CreateOrderForm.css';
+import '../style/App.css'; 
 import { createOrder } from '../service/apiService'; // Import the createOrder function
 
 const CreateOrderForm = ({ onClose, onOrderCreated }) => {
@@ -10,13 +11,29 @@ const CreateOrderForm = ({ onClose, onOrderCreated }) => {
         quantity: 1,
         orderDate: new Date().toISOString().split('T')[0] //this retrieve browser time, more accurately need retrieve server time
     });
-    
+    const [quantityError, setQuantityError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value // Update the specific field in the formData object
+        }));
+    };
+
+    const handleQuantityChange = (value) => {
+        const intValue = parseInt(value, 10);
+    
+        // Validate the quantity
+        if (isNaN(intValue) || intValue < 1) {
+            setQuantityError('Quantity must be a positive integer'); // Set error message
+        } else {
+            setQuantityError(''); // Clear error message
+        }
+    
+        setFormData((prevData) => ({
+            ...prevData,
+            quantity: intValue
         }));
     };
 
@@ -73,12 +90,13 @@ const CreateOrderForm = ({ onClose, onOrderCreated }) => {
                         type="number"
                         name="quantity" 
                         value={formData.quantity}
-                        onChange={handleChange}
+                        onChange={(e) => handleQuantityChange(e.target.value)}
                         min = "1"
+                        step = "1"
                         required
                     />
-                    {formData.quantity <= 0 && (
-                        <span className="error"> Quantity must be greater than 0</span>
+                    {quantityError && (
+                        <span className="error"> {quantityError} </span>
                     )}
                 </div>
                 <div>

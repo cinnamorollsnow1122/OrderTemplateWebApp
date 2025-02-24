@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useDebugValue } from 'react';
-import '../style/CreateOrderForm.css'; //can seperate the edit form css if need
+import '../style/CreateOrderForm.css'; //further dev: can seperate the edit form css to stick with SOLID
+import '../style/App.css'; 
 import { editOrder } from '../service/apiService';
 
 const EditOrderForm = ({ onClose, onOrderUpdated, order}) => {
@@ -9,6 +10,7 @@ const EditOrderForm = ({ onClose, onOrderUpdated, order}) => {
         quantity: 1,
         orderDate: new Date().toISOString().split('T')[0]
     });
+    const [quantityError, setQuantityError] = useState('');
 
     useEffect(() => {
         if (order) {
@@ -26,6 +28,22 @@ const EditOrderForm = ({ onClose, onOrderUpdated, order}) => {
         setFormData((prevData) => ({
             ...prevData,
             [name]: value
+        }));
+    };
+
+    const handleQuantityChange = (value) => {
+        const intValue = parseInt(value, 10);
+    
+        // Validate the quantity
+        if (isNaN(intValue) || intValue < 1) {
+            setQuantityError('Quantity must be a positive integer'); // Set error message
+        } else {
+            setQuantityError(''); // Clear error message
+        }
+    
+        setFormData((prevData) => ({
+            ...prevData,
+            quantity: intValue
         }));
     };
 
@@ -82,12 +100,13 @@ const EditOrderForm = ({ onClose, onOrderUpdated, order}) => {
                         type="number"
                         name="quantity"
                         value={formData.quantity}
-                        onChange={handleChange}
+                        onChange={(e) => handleQuantityChange(e.target.value)}
                         min="1"
+                        step = "1"
                         required
                     />
-                    {formData.quantity <= 0 && (
-                        <span className="error"> Quantity must be greater than 0</span>
+                    {quantityError && (
+                        <span className="error"> {quantityError} </span>
                     )}
                 </div>
                 <div>

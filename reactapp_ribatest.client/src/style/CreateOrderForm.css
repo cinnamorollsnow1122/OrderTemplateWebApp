@@ -57,3 +57,9 @@
     background-color: #8f4944; /* Cancel button color */
     color: white; /* Text color for the button */
 }
+
+.error{
+    text-align: left; /* Align the text to the left */
+    display: block; /* Ensure it takes up the full width */
+    margin-bottom: 10px;
+}

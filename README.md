@@ -109,9 +109,17 @@ This project is a **full-stack application** consisting of a **React frontend** 
 ### Backend
 - `FrontendUrl`: Base URL for the frontend API (default : `https://localhost:5173`).
 
-  ---
-  ##Further Development
-  ### Frontend
+---
+## Further Development
+### Frontend
+- Enhance Access Control: Implement role-based access rights for the order list view page, restricting create, edit, and delete functions based on user permissions, ensuring secure and tailored functionality.
+- Improve Filtering: Add a dropdown box for year-based filtering on the order list, enhancing usability and enabling users to quickly navigate data. Also, if 2024 year data is legacy data, cache the loaded data and refresh it after a period of time.
+- Optimize Responsiveness: Incorporate size handling in CSS to manage small browser windows or devices, using techniques like media queries or flexible layouts to maintain a seamless user experience.
+- Expand Testing: Increase coverage with additional unit and integration tests using Vitest, verifying core features like access rights, filtering, and responsiveness for greater reliability.
+- Streamline Environments: Configure environment variables in .env files for development, UAT, and production (e.g., API endpoints, modes), enabling consistent and context-specific deployments.
   
-  ### Backend
-
+### Backend
+- Strengthen Security: Implement JWT tokens and API keys for robust API validation and role-based access control, ensuring only authorized users access specific endpoints. Additionally, introduce rate limiting to protect against abuse and enhance system resilience.
+- Improve Logging: Add server-side logging to capture all API errors, either in a dedicated log file or a structured log table, enabling better debugging and monitoring of issues.
+- Expand Testing: Increase coverage by adding more unit tests and integration test cases, ensuring greater reliability and stability across the application.
+- Centralize Configuration: Introduce a global settings module to store universal variables—such as connection strings and frontend paths—streamlining maintenance and configuration management.

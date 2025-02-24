@@ -68,7 +68,7 @@ function App() {
 
     const handleOrderCreated = () => {
         loadOrders(); //need call backed to calculate the cost of new order
-        setCurrentPage(1);
+        setCurrentPage(1); //after created, should go to the latest page
     };
 
     const handleOrderEdited = () => {
